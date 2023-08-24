@@ -60,11 +60,6 @@ def main():
         lights = [Light(args.address)]
     else:
         lights = [Light(state['address'])]
-    print(state['state'])
-    print(f"Toggle state: {'ON' if state['state'] else 'OFF'}")
-    print(f"Warm color: {state['warm_color']}")
-    print(f"Cool color: {type(state['cool_color'])}")
-    print(f"Address: {state['address']}")
 
     # Seach for nearby lights
     if args.discover:
@@ -76,6 +71,13 @@ def main():
     if not args.cool:
         args.cool = state['cool_color']
 
+    # Toggle on/off state
+    if args.toggle:
+        if state['state']:
+            args.off = True
+        else:
+            args.on = True
+
     # Iterate over all light detectedu
     for light in lights:
         # connect to the light
@@ -84,13 +86,6 @@ def main():
             light.connect()
         except:
             light.connect()
-
-        # Toggle on/off state
-        if args.toggle:
-            if state['state']:
-                args.off = True
-            else:
-                args.on = True
 
         # Set colors turns on light
         if args.on:
