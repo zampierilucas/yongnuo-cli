@@ -82,10 +82,17 @@ def main():
     for light in lights:
         # connect to the light
         # ugly hack because bluetooth is terrible
-        try:
-            light.connect()
-        except:
-            light.connect()
+        retry = 0
+        while light._p == None:
+            try:
+                light.connect()
+                retry += 1
+            except:
+                print("Connection failed, retrying.")
+
+                if retry == 10:
+                    print("Not able to connect after 10 retries.")
+                    exit(1)
 
         # Set colors turns on light
         if args.on:
